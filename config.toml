@@ -1,0 +1,28 @@
+[webserver]
+port = ":8080"
+
+
+[[providers.layers]]
+name = "auvergne"
+geometry_fieldname = "wkb_geometry"
+id_fieldname = "ogc_fid"
+sql = """
+    SELECT
+        ST_AsBinary(wkb_geometry) AS wkb_geometry, name, ogc_fid, osm_id
+    FROM
+        auvergne
+    WHERE
+        wkb_geometry && !BBOX!
+"""
+
+
+[[maps]]
+name = "openindoor"
+center = [3.3448536,45.7032695, 15.0] # set the center of the map so the user is auto navigated to Bonn
+
+[[maps.layers]]
+  provider_layer = "openindoor.auvergne"
+  min_zoom = 12
+  max_zoom = 22
+
+
