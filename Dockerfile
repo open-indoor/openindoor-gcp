@@ -64,7 +64,7 @@ FROM alpine:3.7
 #LABEL io.gospatial.version="0.6.0_beta"
 COPY --from=build /opt/tegola /opt/
 RUN mkdir -p tegola_config/
-COPY config.toml tegola_config/
+COPY configTemplate.toml tegola_config/
 # COPY secrets.txt /tegola_config/secrets.txt
 # RUN sed -i '/port = ":8080"/r  /tegola_config/secrets.txt' /tegola_config/config.toml
 # Replace env variables
