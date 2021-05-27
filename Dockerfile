@@ -68,6 +68,6 @@ COPY config.toml tegola_config/
 # COPY secrets.txt /tegola_config/secrets.txt
 # RUN sed -i '/port = ":8080"/r  /tegola_config/secrets.txt' /tegola_config/config.toml
 # Replace env variables
-RUN envsubst < "config.toml" > "config.toml"
+RUN envsubst < "configTemplate.toml" > "config.toml"
 EXPOSE 8080
 CMD ["/opt/tegola", "--config", "tegola_config/config.toml", "serve"]
