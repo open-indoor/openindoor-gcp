@@ -3,13 +3,13 @@ port = ":8080"
 
 # register data providers
 [[providers]]
-name = $NAME           # provider name is referenced from map layers
+name = "$NAME"           # provider name is referenced from map layers
 type = "postgis"        # the type of data provider. currently only supports postgis
-host = $HOST      # postgis database host
-port = $DB_PORT             # postgis database port
-database = $DATABASE       # postgis database name
-user = $USER         # postgis database user
-password = $PASS           # postgis database password
+host = "$HOST"      # postgis database host
+port = "$DB_PORT"             # postgis database port
+database = "$DATABASE"       # postgis database name
+user = "$USER"         # postgis database user
+password = "$PASS"           # postgis database password
 srid = 4326             # The default srid for this provider. If not provided it will be WebMercator (3857)
 
 [[providers.layers]]
@@ -34,5 +34,3 @@ center = [3.3448536,45.7032695, 15.0] # set the center of the map so the user is
   provider_layer = "openindoor.auvergne"
   min_zoom = 12
   max_zoom = 22
-
-
