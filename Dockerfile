@@ -62,6 +62,7 @@ RUN cd /go/src/github.com/go-spatial/tegola/cmd/tegola \
 # --- Create minimal deployment image, just alpine & the binary
 FROM alpine:3.7
 #LABEL io.gospatial.version="0.6.0_beta"
+RUN apk add gettext
 COPY --from=build /opt/tegola /opt/
 RUN mkdir -p tegola_config/
 COPY configTemplate.toml tegola_config/
