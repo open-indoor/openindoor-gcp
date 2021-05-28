@@ -6,7 +6,7 @@ port = ":8080"
 name = "openindoor"           # provider name is referenced from map layers
 type = "postgis"        # the type of data provider. currently only supports postgis
 host = "$DB_HOST"      # postgis database host
-port = $DB_PORT            # postgis database port
+port = $DB_PORT          # postgis database port
 database = "$DB_NAME"       # postgis database name
 user = "$DB_USER"         # postgis database user
 password = "$DB_PASS"           # postgis database password
@@ -25,10 +25,10 @@ sql = """
         wkb_geometry && !BBOX!
 """
 
-
 [[maps]]
 name = "openindoor"
-center = [0.69546,47.38758,14.85] # set the center of the map so the user is auto navigated to Bonn
+# set the center of the map so the user is auto navigated to Bonn
+center = [0.69546,47.38758,14.85] 
 
 [[maps.layers]]
   provider_layer = "openindoor.tours"
