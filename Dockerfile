@@ -66,7 +66,6 @@ RUN apk add gettext
 COPY --from=build /opt/tegola /opt/
 RUN mkdir -p tegola_config/
 COPY configTemplate.toml tegola_config/config.toml
-COPY config.toml tegola_config/config.toml
 # Replace env variables
 RUN envsubst < "/tegola_config/configTemplate.toml" > "/tegola_config/config.toml"
 CMD ["/opt/tegola", "--config", "tegola_config/config.toml", "serve"]
