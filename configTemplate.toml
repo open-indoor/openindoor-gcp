@@ -9,7 +9,7 @@ host = "$HOST"      # postgis database host
 port = "$DB_PORT"             # postgis database port
 database = "$DATABASE"       # postgis database name
 user = "$USER"         # postgis database user
-password = "$PASS"           # postgis database password
+password = "$DB_PASS"           # postgis database password
 srid = 4326             # The default srid for this provider. If not provided it will be WebMercator (3857)
 
 [[providers.layers]]
