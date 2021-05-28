@@ -69,6 +69,13 @@ COPY configTemplate.toml tegola_config/
 # COPY secrets.txt /tegola_config/secrets.txt
 # RUN sed -i '/port = ":8080"/r  /tegola_config/secrets.txt' /tegola_config/config.toml
 # Replace env variables
+
+
+# ENV DB_USER=openindoor-db-admin
+# ENV DB_PASS=admin123  
+# ENV DB_NAME=openindoor-db
+# ENV DB_HOST=openindoor-db
+# ENV DB_PORT=5432
 RUN envsubst < "/tegola_config/configTemplate.toml" > "/tegola_config/config.toml"
 EXPOSE 8080
-CMD ["/opt/tegola", "--config", "tegola_config/config.toml", "serve"]
+CMD ["/opt/tegola", "--config", "/tegola_config/config.toml", "serve"]
