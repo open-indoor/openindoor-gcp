@@ -13,14 +13,14 @@ password = "$DB_PASS"           # postgis database password
 srid = 4326             # The default srid for this provider. If not provided it will be WebMercator (3857)
 
 [[providers.layers]]
-name = "auvergne"
+name = "tours"
 geometry_fieldname = "wkb_geometry"
 id_fieldname = "ogc_fid"
 sql = """
     SELECT
         ST_AsBinary(wkb_geometry) AS wkb_geometry, name, ogc_fid, osm_id
     FROM
-        auvergne
+        tours
     WHERE
         wkb_geometry && !BBOX!
 """
@@ -28,9 +28,9 @@ sql = """
 
 [[maps]]
 name = "openindoor"
-center = [3.3448536,45.7032695, 15.0] # set the center of the map so the user is auto navigated to Bonn
+center = [0.69546,47.38758,14.85] # set the center of the map so the user is auto navigated to Bonn
 
 [[maps.layers]]
-  provider_layer = "openindoor.auvergne"
+  provider_layer = "openindoor.tours"
   min_zoom = 12
   max_zoom = 22
