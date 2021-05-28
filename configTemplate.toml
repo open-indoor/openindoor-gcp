@@ -5,7 +5,7 @@ port = ":8080"
 [[providers]]
 name = "openindoor"           # provider name is referenced from map layers
 type = "postgis"        # the type of data provider. currently only supports postgis
-host = $DB_HOS      # postgis database host
+host = $DB_HOST      # postgis database host
 port = $DB_PORT          # postgis database port
 database = $DB_NAME       # postgis database name
 user = $DB_USER         # postgis database user
