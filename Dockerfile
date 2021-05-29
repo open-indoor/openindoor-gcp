@@ -64,12 +64,13 @@ FROM alpine:3.7
 #LABEL io.gospatial.version="0.6.0_beta"
 RUN apk add gettext \
 	&& apk add python3
+	# && apk add bash 
 COPY --from=build /opt/tegola /opt/
 COPY main.py main.py
 RUN chmod +x main.py
 RUN mkdir -p tegola_config/
 COPY configTemplate.toml tegola_config/configTemplate.toml
-# Replace env variables
+
 # RUN envsubst < "/tegola_config/configTemplate.toml" > "/tegola_config/config.toml"
 # CMD ["/opt/tegola", "--config", "tegola_config/config.toml", "serve"]
 CMD python3 main.py  
