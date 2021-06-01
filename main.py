@@ -13,7 +13,6 @@ db_host = os.environ["DB_HOST"]
 # Little trick for replace environment variables. As they don't exist during during the build time, we can't use envsubst.
 # Moreover, envsubst failed while using it with subprocess.
 def main():
-    time.sleep(300)
     formerStrings = ["$DB_HOST","$DB_NAME","$DB_PORT","$DB_USER", "$DB_PASS"]
     newerStrings = [db_host,db_name, db_port,db_user,db_pass]
     with open("/tegola_config/configTemplate.toml", "r") as inputFile:
