@@ -1,0 +1,36 @@
+[webserver]
+port = ":8080"
+
+# register data providers
+[[providers]]
+name = "openindoor"           # provider name is referenced from map layers
+type = "postgis"        # the type of data provider currently only supports postgis
+host = "$DB_HOST"      #postgis database host
+port = $DB_PORT         # postgis database port
+database = "$DB_NAME"       # postgis database name
+user = "$DB_USER"         # postgis database user
+password = "$DB_PASS"           # postgis database password
+srid = 4326             # The default srid for this provider. If not provided it will be WebMercator (3857)
+
+    [[providers.layers]]
+    name = "tours"
+    geometry_fieldname = "wkb_geometry"
+    id_fieldname = "ogc_fid"
+    sql = """
+        SELECT
+            ST_AsBinary(wkb_geometry) AS wkb_geometry, ogc_fid
+        FROM
+            tours
+        WHERE
+            wkb_geometry && !BBOX!
+    """
+
+[[maps]]
+name = "openindoor"
+# set the center of the map so the user is auto navigated to Bonn
+center = [0.69546,47.38758,14.85] 
+
+[[maps.layers]]
+  provider_layer = "openindoor.tours"
+  min_zoom = 12
+  max_zoom = 22
