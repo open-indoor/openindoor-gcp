@@ -1,6 +1,7 @@
 [webserver]
 port = ":8080"
 
+
 # register data providers
 [[providers]]
 name = "openindoor"           # provider name is referenced from map layers
@@ -14,113 +15,107 @@ srid = 4326             # The default srid for this provider. If not provided it
 
   [[providers.layers]]
   name = "building-footprint"
-  geometry_fieldname = "wkb_geometry"
-  id_fieldname = "ogc_fid"
-  sql = """
-      SELECT
-          ST_AsBinary(wkb_geometry) AS wkb_geometry, ogc_fid
-      FROM
-          "building_footprint"
-      WHERE
-          wkb_geometry && !BBOX!
-  """
+  tablename="building_footprint"
+  geometry_fieldname = "geometry"
+  srid = 4326
+  geometry_type = "Polygon"
+
 
   [[providers.layers]]
-  name = "building"
-  geometry_fieldname = "wkb_geometry"
-  id_fieldname = "ogc_fid"
-#   tablename = "buildings"
-  sql = """
-      SELECT
-          ST_AsBinary(wkb_geometry) AS wkb_geometry, ogc_fid, building, level, min_height, "building:levels"
-      FROM
-          buildings
-      WHERE
-          wkb_geometry && !BBOX!
-  """
+  name = "building-footprint-centroid"
+  tablename="building_footprint"
+  geometry_fieldname = "openindoor_centroid"
+  srid = 4326
+  geometry_type = "Point"
+
 
   [[providers.layers]]
-  name = "shape"
-  geometry_fieldname = "wkb_geometry"
-  id_fieldname = "ogc_fid"
+  name = "building-item-point"
   sql = """
       SELECT
-          ST_AsBinary(wkb_geometry) AS wkb_geometry, ogc_fid, level, indoor
+        ST_AsBinary(geometry) as geometry
       FROM
-          buildings
+        "building_item"
       WHERE
-          wkb_geometry && !BBOX!
+        geometry && !BBOX! AND openindoor_geomtype='Point'
   """
+  geometry_fieldname = "geometry"
+  srid = 4326
+  geometry_type = "Point"
+  
+  [[providers.layers]]
+  name = "building-item-linestring"
+  sql = """
+      SELECT
+        ST_AsBinary(geometry) as geometry
+      FROM
+        "building_item"
+      WHERE
+        geometry && !BBOX! AND openindoor_geomtype='LineString'
+  """
+  geometry_fieldname = "geometry"
+  srid = 4326
+  geometry_type = "LineString"
 
   [[providers.layers]]
-  name = "indoor"
-  geometry_fieldname = "wkb_geometry"
-  id_fieldname = "ogc_fid"
+  name = "building-item-polygon"
   sql = """
       SELECT
-          ST_AsBinary(wkb_geometry) AS wkb_geometry, ogc_fid, level, indoor, amenity, shop, name, highway
+        ST_AsBinary(geometry) as geometry
       FROM
-          buildings
+        "building_item"
       WHERE
-          wkb_geometry && !BBOX!
+        geometry && !BBOX! AND openindoor_geomtype='Polygon'
   """
+  geometry_fieldname = "geometry"
+  srid = 4326
+  geometry_type = "Polygon"
 
   [[providers.layers]]
-  name = "places"
-  geometry_fieldname = "wkb_geometry"
-  id_fieldname = "ogc_fid"
+  name = "building-item-multipolygon"
   sql = """
       SELECT
-          ST_AsBinary(wkb_geometry) AS wkb_geometry, name, id, town, ogc_fid
+        ST_AsBinary(geometry) as geometry
       FROM
-          places
+        "building_item"
       WHERE
-          wkb_geometry && !BBOX!
+        geometry && !BBOX! AND openindoor_geomtype='MultiPolygon'
   """
-
-  [[providers.layers]]
-  name = "pins"
-  geometry_fieldname = "wkb_geometry"
-  id_fieldname = "ogc_fid"
-  sql = """
-      SELECT
-          ST_AsBinary(wkb_geometry) AS wkb_geometry, id, town, ogc_fid
-      FROM
-          pins
-      WHERE
-          wkb_geometry && !BBOX!
-  """
+  geometry_fieldname = "geometry"
+  srid = 4326
+  geometry_type = "MultiPolygon"
+  
 
 [[maps]]
 name = "openindoor"
-center = [2.357945, 48.876263, 17.0]
-
-  [[maps.layers]]
-  provider_layer = "openindoor.building"
-  min_zoom = 15
-  max_zoom = 20
-
-  [[maps.layers]]
-  provider_layer = "openindoor.shape"
-  min_zoom = 15
-  max_zoom = 20
-
-  [[maps.layers]]
-  provider_layer = "openindoor.indoor"
-  min_zoom = 15
-  max_zoom = 20
-
-  [[maps.layers]]
-  provider_layer = "openindoor.places"
-  min_zoom = 15
-  max_zoom = 20
-
-  [[maps.layers]]
-  provider_layer = "openindoor.pins"
-  min_zoom = 0
-  max_zoom = 20
+center = [-2.467, 48.264, 7.0]
 
   [[maps.layers]]
   provider_layer = "openindoor.building-footprint"
   min_zoom = 10
+  max_zoom = 20
+
+  [[maps.layers]]
+  provider_layer = "openindoor.building-footprint-centroid"
+  min_zoom = 0
+  max_zoom = 10
+
+  [[maps.layers]]
+  provider_layer = "openindoor.building-item-point"
+  min_zoom = 15
+  max_zoom = 20
+
+  [[maps.layers]]
+  provider_layer = "openindoor.building-item-linestring"
+  min_zoom = 15
+  max_zoom = 20
+
+  [[maps.layers]]
+  provider_layer = "openindoor.building-item-polygon"
+  min_zoom = 15
+  max_zoom = 20
+
+  [[maps.layers]]
+  provider_layer = "openindoor.building-item-multipolygon"
+  min_zoom = 15
   max_zoom = 20
