@@ -27,63 +27,6 @@ srid = 4326             # The default srid for this provider. If not provided it
   geometry_fieldname = "openindoor_centroid"
   srid = 4326
   geometry_type = "Point"
-
-
-  [[providers.layers]]
-  name = "building-item-point"
-  sql = """
-      SELECT
-        ST_AsBinary(geometry) as geometry
-      FROM
-        "building_item"
-      WHERE
-        geometry && !BBOX! AND openindoor_geomtype='Point'
-  """
-  geometry_fieldname = "geometry"
-  srid = 4326
-  geometry_type = "Point"
-  
-  [[providers.layers]]
-  name = "building-item-linestring"
-  sql = """
-      SELECT
-        ST_AsBinary(geometry) as geometry
-      FROM
-        "building_item"
-      WHERE
-        geometry && !BBOX! AND openindoor_geomtype='LineString'
-  """
-  geometry_fieldname = "geometry"
-  srid = 4326
-  geometry_type = "LineString"
-
-  [[providers.layers]]
-  name = "building-item-polygon"
-  sql = """
-      SELECT
-        ST_AsBinary(geometry) as geometry
-      FROM
-        "building_item"
-      WHERE
-        geometry && !BBOX! AND openindoor_geomtype='Polygon'
-  """
-  geometry_fieldname = "geometry"
-  srid = 4326
-  geometry_type = "Polygon"
-
-  [[providers.layers]]
-  name = "building-item-multipolygon"
-  sql = """
-      SELECT
-        ST_AsBinary(geometry) as geometry
-      FROM
-        "building_item"
-      WHERE
-        geometry && !BBOX! AND openindoor_geomtype='MultiPolygon'
-  """
-  geometry_fieldname = "geometry"
-  srid = 4326
-  geometry_type = "MultiPolygon"
   
 
 [[maps]]
@@ -99,23 +42,3 @@ center = [-2.467, 48.264, 7.0]
   provider_layer = "openindoor.building-footprint-centroid"
   min_zoom = 0
   max_zoom = 10
-
-  [[maps.layers]]
-  provider_layer = "openindoor.building-item-point"
-  min_zoom = 15
-  max_zoom = 20
-
-  [[maps.layers]]
-  provider_layer = "openindoor.building-item-linestring"
-  min_zoom = 15
-  max_zoom = 20
-
-  [[maps.layers]]
-  provider_layer = "openindoor.building-item-polygon"
-  min_zoom = 15
-  max_zoom = 20
-
-  [[maps.layers]]
-  provider_layer = "openindoor.building-item-multipolygon"
-  min_zoom = 15
-  max_zoom = 20
