@@ -3,12 +3,12 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   id: Build
   # args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/$PROJECT_ID/main-openindoor-repo/tegola-openindoor:tours', '.' ]  
-  args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/$PROJECT_ID/main-openindoor-repo/tegola-openindoor:footprint', '.' ]  
+  args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/$PROJECT_ID/main-openindoor-repo/tegola-openindoor:RennesIndoor', '.' ]  
 # Push the Docker image to Artifact repository
 - name: 'gcr.io/cloud-builders/docker'
   id: Push
   # args: ['push', 'europe-west1-docker.pkg.dev/$PROJECT_ID/main-openindoor-repo/tegola-openindoor:tours']
-  args: ['push', 'europe-west1-docker.pkg.dev/$PROJECT_ID/main-openindoor-repo/tegola-openindoor:footprint']
+  args: ['push', 'europe-west1-docker.pkg.dev/$PROJECT_ID/main-openindoor-repo/tegola-openindoor:RennesIndoor']
 # Deploy the image to Cloud Run
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: gcloud
@@ -18,13 +18,14 @@ steps:
   - 'tegola'
   - '--image'
   # - 'europe-west1-docker.pkg.dev/$PROJECT_ID/main-openindoor-repo/tegola-openindoor:tours'
-  - 'europe-west1-docker.pkg.dev/$PROJECT_ID/main-openindoor-repo/tegola-openindoor:footprint'
+  - 'europe-west1-docker.pkg.dev/$PROJECT_ID/main-openindoor-repo/tegola-openindoor:RennesIndoor'
   - '--region'
   - 'europe-west1'
   - '--platform'
   - 'managed'
   - '--ingress'
   - 'internal-and-cloud-load-balancing'
-  - '--no-allow-unauthenticated'
+  # - '--no-allow-unauthenticated'
+  - allow-unauthentificated
 images:
 - 'europe-west1-docker.pkg.dev/$PROJECT_ID/main-openindoor-repo/tegola-openindoor'

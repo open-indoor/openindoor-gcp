@@ -15,30 +15,113 @@ srid = 4326             # The default srid for this provider. If not provided it
 
   [[providers.layers]]
   name = "building-footprint"
-  tablename="building_footprint"
-  geometry_fieldname = "geometry"
-  srid = 4326
-  geometry_type = "Polygon"
-
+  geometry_fieldname = "wkb_geometry"
+  id_fieldname = "ogc_fid"
+  sql = """
+      SELECT
+          ST_AsBinary(wkb_geometry) AS wkb_geometry, ogc_fid
+      FROM
+          "building_footprint"
+      WHERE
+          wkb_geometry && !BBOX!
+  """
 
   [[providers.layers]]
-  name = "building-footprint-centroid"
-  tablename="building_footprint"
-  geometry_fieldname = "openindoor_centroid"
-  srid = 4326
-  geometry_type = "Point"
-  
+  name = "building"
+  geometry_fieldname = "wkb_geometry"
+  id_fieldname = "ogc_fid"
+#   tablename = "buildings"
+  sql = """
+      SELECT
+          ST_AsBinary(wkb_geometry) AS wkb_geometry, ogc_fid, building, level, min_height, "building:levels"
+      FROM
+          buildings
+      WHERE
+          wkb_geometry && !BBOX!
+  """
+
+  [[providers.layers]]
+  name = "shape"
+  geometry_fieldname = "wkb_geometry"
+  id_fieldname = "ogc_fid"
+  sql = """
+      SELECT
+          ST_AsBinary(wkb_geometry) AS wkb_geometry, ogc_fid, level, indoor
+      FROM
+          buildings
+      WHERE
+          wkb_geometry && !BBOX!
+  """
+
+  [[providers.layers]]
+  name = "indoor"
+  geometry_fieldname = "wkb_geometry"
+  id_fieldname = "ogc_fid"
+  sql = """
+      SELECT
+          ST_AsBinary(wkb_geometry) AS wkb_geometry, ogc_fid, level, indoor, amenity, shop, name, highway
+      FROM
+          buildings
+      WHERE
+          wkb_geometry && !BBOX!
+  """
+
+  [[providers.layers]]
+  name = "places"
+  geometry_fieldname = "wkb_geometry"
+  id_fieldname = "ogc_fid"
+  sql = """
+      SELECT
+          ST_AsBinary(wkb_geometry) AS wkb_geometry, name, id, town, ogc_fid
+      FROM
+          places
+      WHERE
+          wkb_geometry && !BBOX!
+  """
+
+  [[providers.layers]]
+  name = "pins"
+  geometry_fieldname = "wkb_geometry"
+  id_fieldname = "ogc_fid"
+  sql = """
+      SELECT
+          ST_AsBinary(wkb_geometry) AS wkb_geometry, id, town, ogc_fid
+      FROM
+          pins
+      WHERE
+          wkb_geometry && !BBOX!
+  """
 
 [[maps]]
 name = "openindoor"
-center = [-2.467, 48.264, 7.0]
+center = [2.357945, 48.876263, 17.0]
+
+  [[maps.layers]]
+  provider_layer = "openindoor.building"
+  min_zoom = 15
+  max_zoom = 20
+
+  [[maps.layers]]
+  provider_layer = "openindoor.shape"
+  min_zoom = 15
+  max_zoom = 20
+
+  [[maps.layers]]
+  provider_layer = "openindoor.indoor"
+  min_zoom = 15
+  max_zoom = 20
+
+  [[maps.layers]]
+  provider_layer = "openindoor.places"
+  min_zoom = 15
+  max_zoom = 20
+
+  [[maps.layers]]
+  provider_layer = "openindoor.pins"
+  min_zoom = 0
+  max_zoom = 20
 
   [[maps.layers]]
   provider_layer = "openindoor.building-footprint"
   min_zoom = 10
   max_zoom = 20
-
-  [[maps.layers]]
-  provider_layer = "openindoor.building-footprint-centroid"
-  min_zoom = 0
-  max_zoom = 10
