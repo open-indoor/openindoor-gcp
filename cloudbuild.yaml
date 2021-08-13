@@ -26,6 +26,6 @@ steps:
   - '--ingress'
   - 'internal-and-cloud-load-balancing'
   # - '--no-allow-unauthenticated'
-  - --allow-unauthentificated
+  - --allow-unauthenticated
 images:
 - 'europe-west1-docker.pkg.dev/$PROJECT_ID/main-openindoor-repo/tegola-openindoor'
